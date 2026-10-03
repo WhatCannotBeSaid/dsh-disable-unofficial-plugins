@@ -1,7 +1,7 @@
 {
   "name": "dsh-disable-unofficial-plugins",
-  "version": "1.0.0",
-  "description": "DSH Web UI plugin: 在「插件 → 已安装」分组标题行最右侧加一个「停用全部非官方插件」按钮，一键停用所有非官方插件（只停用，不卸载）",
+  "version": "1.1.0",
+  "description": "DSH Web UI plugin: 在「插件 → 已安装」分组标题行最右侧加一个勾选式开关，可选择停用/启用哪些非官方插件（默认全选、只停用不卸载；全部停用后按钮翻转为启用侧）",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
