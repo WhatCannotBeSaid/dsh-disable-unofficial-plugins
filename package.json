@@ -1,0 +1,46 @@
+{
+  "name": "dsh-disable-unofficial-plugins",
+  "version": "1.0.0",
+  "description": "DSH Web UI plugin: 在「插件 → 已安装」分组标题行最右侧加一个「停用全部非官方插件」按钮，一键停用所有非官方插件（只停用，不卸载）",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhatCannotBeSaid/dsh-disable-unofficial-plugins.git"
+  },
+  "homepage": "https://github.com/WhatCannotBeSaid/dsh-disable-unofficial-plugins#readme",
+  "bugs": {
+    "url": "https://github.com/WhatCannotBeSaid/dsh-disable-unofficial-plugins/issues"
+  },
+  "author": "WhatCannotBeSaid",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes"
+      ]
+    }
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "plugin",
+    "web-ui"
+  ],
+  "license": "MIT"
+}

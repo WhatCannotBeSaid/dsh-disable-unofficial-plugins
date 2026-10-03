@@ -1,0 +1,6 @@
+# dsh-disable-unofficial-plugins bundle patch.
+# 安装时 profile 会把本包追加进 dsh.profile.bundles 并应用这一层，
+# 因此插件无需手工编辑 cordis.patch.yml 即可挂载。
+- insert:
+    - id: disable-unofficial-plugins
+      name: dsh-disable-unofficial-plugins
