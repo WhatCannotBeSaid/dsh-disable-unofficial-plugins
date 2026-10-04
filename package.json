@@ -1,16 +1,18 @@
 {
   "name": "dsh-disable-unofficial-plugins",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "DSH Web UI plugin: a checkbox-style switch at the right end of the Plugins → Installed group header that lets you choose which unofficial plugins to disable or enable — all selected by default, disable/enable only (never uninstall), and once everything is disabled the button flips to the enabling side. UI copy follows the app language.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./locale/*": "./locale/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
+    "locale",
     "cordis.patch.yml",
     "README.md",
     "LICENSE"

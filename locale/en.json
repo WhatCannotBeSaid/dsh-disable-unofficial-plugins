@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "One-Click Plugin Toggle",
+    "description": "A checkbox switch at the end of the Plugins → Installed group header: pick the unofficial plugins you want off, then disable or re-enable them in one click — it never uninstalls anything."
+  }
+}
