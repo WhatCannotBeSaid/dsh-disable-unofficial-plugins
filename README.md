@@ -1,80 +1,90 @@
 # dsh-disable-unofficial-plugins
 
-在 DeepSeek Harness「插件」页面的**「已安装」分组标题行最右侧**加一个 **停用非官方插件…** 按钮：点开后勾选要停用哪些非官方插件（默认全选），确认后批量停用。全部停用之后，按钮自己翻成 **启用非官方插件…**，同一套勾选清单可以把它们再启用回来。
+English | [中文](README.zh.md)
 
 > Adds a **Disable unofficial plugins…** button to the right end of the *Installed* group header on the DSH Plugins page. It opens a checklist of the unofficial plugins in the current direction — all checked by default — and toggles only the ones you leave checked; once everything is disabled the button flips to **Enable unofficial plugins…**. Disabling and enabling only: it never uninstalls a plugin and never deletes plugin files or configuration data.
 
-## 它做什么
+> **Note on language.** This file is the English documentation; the Chinese original is [README.zh.md](README.zh.md). The copy this plugin injects into the Plugins page follows the software language (**Settings → General → Language**): it registers a Chinese and an English dictionary with the host locale service and repaints itself — button, open dialog and result report — the moment you switch. Strings below are quoted in English, with the Chinese original in parentheses.
 
-- 按钮固定在「已安装」分组标题行（`section[data-plugin-group="bundles"]`）最右侧，与该行的标题、计数垂直居中对齐；标题与计数节点的位置、整行行高都不变。
-- 点击后先弹出确认框，里面是**勾选清单**：按钮在停用侧时列当前**已启用**的非官方插件，翻到启用侧后列当前**已停用**的。
-- **默认全选**，所以「一次全停」仍然是点两下（按钮 + 确认）；取消勾选就能只动其中几个。工具栏带「全选 / 全不选」与实时计数 `已选 N / M`，主按钮文案跟着勾选变（如 `停用 17 个插件`）；一个都没勾时主按钮置灰，点了不执行。
-- 确认后**串行**逐个切换，任何一项失败都不会中断其余插件。
-- 结束后给出结果反馈：成功数量、未成功项、跳过的只读项，以及「将在下次启动 DSH 后生效」的项数。
-- 失败项**行内只显示错误码**，完整诊断收进该行的**「完整诊断」折叠区**（默认收起）——长诊断不会把同一行的包名挤变形。
-- **只停用 / 只启用，不卸载**：不删除插件文件，不删除插件配置数据，官方插件不受影响。
+## What it does
 
-## 「非官方插件」的判定标准
+- The button is pinned to the right end of the *Installed* group header (`section[data-plugin-group="bundles"]`), vertically centered with that row's title and count; the title and count nodes keep their positions and the row keeps its height.
+- Clicking it first opens a confirm dialog holding a **checklist**: with the button on the disable side it lists the unofficial plugins that are currently **enabled**; once flipped to the enable side it lists the ones that are currently **disabled**.
+- **Everything is checked by default**, so "disable them all in one go" is still two clicks (button + confirm); uncheck the ones you want to keep and only the rest are toggled. The toolbar carries Select all / Select none (`全选` / `全不选` in Chinese) and a live counter `N of M selected` (`已选 N / M`), and the primary button label follows the selection (e.g. `Disable 17 plugins` / `停用 17 个插件`); with nothing checked the primary button is greyed out and does nothing when clicked.
+- After you confirm, the plugins are toggled **serially**, one at a time; a failure on any single item never interrupts the rest.
+- When it finishes you get a result report: how many succeeded, which ones did not succeed, the read-only entries that were skipped, and how many items will only take effect after the next DSH launch.
+- A failed row shows **only the error code inline**; the full diagnostic goes into that row's **`Full diagnostics`** (`完整诊断`) collapsible area, collapsed by default — a long diagnostic will not distort the package name on the same row.
+- **Disable / enable only, never uninstall**: no plugin file is deleted, no plugin configuration data is deleted, and official plugins are unaffected.
 
-以下条件同时成立才算「非官方插件」，才会出现在勾选清单里：
+## What counts as an "unofficial plugin"
 
-1. **不在内置组合包清单内**：`@deepseek-ai/dsh-base`、`@deepseek-ai/dsh-web-app`、`@deepseek-ai/dsh-headless`、`@deepseek-ai/dsh-sdk-app`、`@deepseek-ai/dsh-acp-app`、`@deepseek-ai/dsh-sdk-minimal`；
-2. **通过官方页「已安装」分组的同口径过滤**（已安装，或非可选），保证按钮的作用范围与它旁边那个计数一致；
-3. **组合包名不以 `@deepseek-ai/` 开头**——DSH 安装自带的组合包全部发布在该作用域下，社区与第三方插件（含 `@michengai/`、`@liustack/` 等其它作用域）一律不在此列；
-4. **不是本插件自身**，否则点一次按钮就把自己停掉了。
+A plugin enters the checklist only when all of the following hold:
 
-命中的插件再按可操作性三分：
+1. **It is not one of the built-in bundles**: `@deepseek-ai/dsh-base`, `@deepseek-ai/dsh-web-app`, `@deepseek-ai/dsh-headless`, `@deepseek-ai/dsh-sdk-app`, `@deepseek-ai/dsh-acp-app`, `@deepseek-ai/dsh-sdk-minimal`;
+2. **It passes the same filter as the official Plugins page's *Installed* group** (installed, or not optional), which keeps the button's scope identical to the count next to it;
+3. **Its bundle name does not start with `@deepseek-ai/`** — every bundle shipped with a DSH install is published under that scope, so community and third-party plugins (including other scopes such as `@michengai/` and `@liustack/`) all fall outside it;
+4. **It is not this plugin itself**, or one click of the button would disable the button.
 
-| 分类 | 含义 | 处理 |
+Matching plugins are then split three ways by what can actually be done to them:
+
+| Class | Meaning | Handling |
 | --- | --- | --- |
-| 可停用 | 当前启用、可经 profile 组合包层改动 | 出现在**停用侧**的勾选清单里 |
-| 可启用 | 非官方，但已经停用 | 全部停用后出现在**启用侧**的勾选清单里 |
-| 只读项 | 带 `readOnlyReason`（官方托管、不可管理） | 两个方向都不收它，在确认框与结果里如实列出原因 |
+| Disableable | Currently enabled and changeable through the profile bundle layer | Listed in the **disable side** checklist |
+| Enableable | Unofficial, but already disabled | Listed in the **enable side** checklist once everything is disabled |
+| Read-only | Carries a `readOnlyReason` (officially managed, not manageable) | Excluded from both directions, with the reason reported honestly in the confirm dialog and in the result |
 
-## 按钮何时不可用
+## When the button is unavailable
 
-按钮自动置灰，鼠标悬停给出具体原因：
+The button greys itself out and gives the specific reason on hover:
 
-- `没有可切换的非官方插件（N 个只读项既停不了也启用不了）`
-- `没有安装任何非官方插件`
-- `正在读取插件列表…`、`正在停用非官方插件…`（读取中与执行中）
-- `插件管理服务未就绪（remote 已在，remote.pluginManager 尚未挂载，正在等待）` —— 宿主远程服务晚于页面挂载时先置灰并自动重试，就绪后自行恢复
+- `No switchable unofficial plugins (N read-only entries can be neither disabled nor enabled)` — `没有可切换的非官方插件（N 个只读项既停不了也启用不了）`
+- `No unofficial plugins are installed` — `没有安装任何非官方插件`
+- `Reading the plugin list…` / `Disabling unofficial plugins…` — `正在读取插件列表…` / `正在停用非官方插件…` (while reading and while running)
+- `The plugin management service is not ready (remote is present, remote.pluginManager is not mounted yet; waiting)` — `插件管理服务未就绪（remote 已在，remote.pluginManager 尚未挂载，正在等待）`. When the host remote service mounts later than the page, the button greys out, retries automatically, and recovers by itself once the service is ready.
 
-按钮可用时的悬停提示：
+Hover hints while the button is usable:
 
-- `选择要停用的非官方插件（共 N 个可停用，只停用不卸载）`
-- `选择要启用的非官方插件（共 N 个可启用，只启用不安装）`
-- 存在只读项时追加 `，另有 N 个只读项会被跳过`
+- `Choose the unofficial plugins to disable (N can be disabled; disable only, never uninstall)` — `选择要停用的非官方插件（共 N 个可停用，只停用不卸载）`
+- `Choose the unofficial plugins to enable (N can be enabled; enable only, never install)` — `选择要启用的非官方插件（共 N 个可启用，只启用不安装）`
+- when read-only entries exist, `; N read-only entries will be skipped` is appended — `，另有 N 个只读项会被跳过`
 
-## 安装
+## Install
 
 ```sh
 dsh plugin --profile web add github:WhatCannotBeSaid/dsh-disable-unofficial-plugins
 ```
 
-把 `web` 换成目标 profile 名（例如 `dsh-tui`）。安装后**重启 DSH**：客户端束只在模块图重新合成时才会更新，单纯刷新页面会命中旧缓存。
+Replace `web` with the target profile name (for example `dsh-tui`). **Restart DSH after installing**: the client bundle is only refreshed when the module graph is recomposed, so a plain page refresh hits the old cache.
 
-## 卸载
+## Uninstall
 
 ```sh
 dsh plugin --profile web remove dsh-disable-unofficial-plugins
 ```
 
-卸载会连带移除本插件自身，但**不会**把它停用过的那些插件重新启用，也**不会**把它启用过的插件停回去。
+Uninstalling removes this plugin itself, but it does **not** re-enable the plugins it disabled, and does **not** disable the plugins it enabled.
 
-## 实现说明
+## Implementation notes
 
-- 纯客户端插件，用原生 DOM 注入实现，不接管官方 React 树；宿主侧半无副作用（`inject = []`，`apply` 为空）。
-- 所有数据读取与写操作都走宿主远程服务：`ctx.get('remote.pluginManager')` 的 `listBundles()` 与 `setBundleEnabled(name, enabled)`。注意远程命名空间是独立的 cordis 服务，服务名是点分形式 `remote.<namespace>`，因此**不能**写成 `ctx.get('remote').pluginManager`。
-- 切换写的是 profile 的组合包层（`dsh.profile.bundles`），所以部分改动需要重启 DSH 才生效，结果反馈里会单独标出。
-- 勾选状态只活在弹窗 DOM 上，不额外维护一份 JS 副本，避免两边不同步。
-- 样式全部复用官方主题 token（`--dsw-*`），每个 token 都带兜底值，因此跟随当前主题。
+- A pure client-side plugin, injected with plain DOM; it never takes over the official React tree. The host half is effectively side-effect free (`inject = []`, empty `apply`).
+- All data reads and writes go through the host remote service: `listBundles()` and `setBundleEnabled(name, enabled)` on `ctx.get('remote.pluginManager')`. Note that the remote namespaces are separate cordis services named in dotted form `remote.<namespace>`, so `ctx.get('remote').pluginManager` **cannot** be used.
+- Toggling writes to the profile's bundle layer (`dsh.profile.bundles`), so some changes only take effect after restarting DSH; the result report calls those items out separately.
+- Checkbox state lives only in the dialog DOM — no second JS copy is kept, so the two can never drift apart.
+- All styling reuses official theme tokens (`--dsw-*`), each with a fallback value, so it follows the current theme.
 
-## 版本
+## Language
 
-- **1.1.0** —— 按钮改成勾选清单，可以选择停用/启用哪些插件（默认全选）；全部停用后按钮翻转为启用侧；失败项行内只显示错误码，完整诊断收进折叠区。
-- **1.0.0** —— 首个版本：一键停用全部非官方插件。
+- The injected copy follows the software language. The client half is gated on `inject = ['remote', 'locale']`, and its package declares the matching client modules in `dsh.client.inject` (`@deepseek-ai/dsh-api-remotes`, `@deepseek-ai/dsh-client-locale`). It registers its own `disableUnofficialPlugins` namespace as a `{ zh, en }` dictionary with the official locale service (`ctx.locale.register` + `ctx.locale.bind`); the host half stays side-effect free (`inject = []`).
+- It subscribes to locale changes and repaints whatever is on screen: the button, its hover hint, and any dialog that is currently open. Dialogs are painted in place (title / description / body / footer are re-filled), never rebuilt, so switching language mid-dialog keeps your checkbox selection and the run in progress.
+- `cancel` / `close` are **not** duplicated in this plugin's dictionary — they come from the locale service's own `common` namespace, so every host-provided translation of those two words is picked up at once.
+- On a host with no locale service at all, it falls back to the browser language (matching DSH's own rule: anything that is neither Chinese nor English becomes English).
 
-## 许可证
+## Versions
 
-MIT，见 [LICENSE](./LICENSE)。
+- **1.2.0** — the injected copy follows the software language: a Chinese and an English dictionary registered with the host locale service, repainted live — including an open dialog — when you switch language in Settings → General → Language.
+- **1.1.0** — the button becomes a checklist, so you choose which plugins to disable/enable (all checked by default); once everything is disabled the button flips to the enable side; a failed row shows only the error code inline, with the full diagnostic moved into a collapsible area.
+- **1.0.0** — first release: one-click disable of every unofficial plugin.
+
+## License
+
+MIT, see [LICENSE](./LICENSE).

@@ -1,7 +1,7 @@
 {
   "name": "dsh-disable-unofficial-plugins",
-  "version": "1.1.0",
-  "description": "DSH Web UI plugin: 在「插件 → 已安装」分组标题行最右侧加一个勾选式开关，可选择停用/启用哪些非官方插件（默认全选、只停用不卸载；全部停用后按钮翻转为启用侧）",
+  "version": "1.2.0",
+  "description": "DSH Web UI plugin: a checkbox-style switch at the right end of the Plugins → Installed group header that lets you choose which unofficial plugins to disable or enable — all selected by default, disable/enable only (never uninstall), and once everything is disabled the button flips to the enabling side. UI copy follows the app language.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -31,7 +31,8 @@
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-api-remotes"
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-locale"
       ]
     }
   },
