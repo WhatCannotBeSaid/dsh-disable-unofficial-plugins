@@ -50,11 +50,19 @@ Hover hints while the button is usable:
 
 ## Install
 
+From the npm registry:
+
 ```sh
-dsh plugin --profile web add github:WhatCannotBeSaid/dsh-disable-unofficial-plugins
+dsh plugin --profile <profile> add dsh-disable-unofficial-plugins
 ```
 
-Replace `web` with the target profile name (for example `dsh-tui`). **Restart DSH after installing**: the client bundle is only refreshed when the module graph is recomposed, so a plain page refresh hits the old cache.
+Or straight from GitHub:
+
+```sh
+dsh plugin --profile <profile> add github:WhatCannotBeSaid/dsh-disable-unofficial-plugins
+```
+
+Replace `<profile>` with the target profile name (for example `web` or `dsh-tui`). **Restart DSH after installing**: the client bundle is only refreshed when the module graph is recomposed, so a plain page refresh hits the old cache.
 
 ## Uninstall
 

@@ -50,11 +50,19 @@
 
 ## 安装
 
+从 npm registry 安装：
+
 ```sh
-dsh plugin --profile web add github:WhatCannotBeSaid/dsh-disable-unofficial-plugins
+dsh plugin --profile <profile> add dsh-disable-unofficial-plugins
 ```
 
-把 `web` 换成目标 profile 名（例如 `dsh-tui`）。安装后**重启 DSH**：客户端束只在模块图重新合成时才会更新，单纯刷新页面会命中旧缓存。
+或直接从 GitHub 装：
+
+```sh
+dsh plugin --profile <profile> add github:WhatCannotBeSaid/dsh-disable-unofficial-plugins
+```
+
+把 `<profile>` 换成目标 profile 名（例如 `web` 或 `dsh-tui`）。安装后**重启 DSH**：客户端束只在模块图重新合成时才会更新，单纯刷新页面会命中旧缓存。
 
 ## 卸载
 
